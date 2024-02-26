@@ -6,5 +6,4 @@ pipeline for enrichment analysis of noncoding Single Nucleotide Variants (SNVs) 
 
 # Flag explained
 
-```-r REGIONS, --reg
-	path to the text file with +-1Kb extended CRC aTFBSs coordinates 'chr\tstart\tstop\tID'```
+```-r REGIONS, --reg=path to the text file with +-1Kb extended CRC aTFBSs coordinates 'chr\tstart\tstop\tID'```
