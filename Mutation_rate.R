@@ -31,13 +31,13 @@ args <- parse_args(p)
 if(is.na(args$root1)){args$root1 <- gsub("_1kb_filtered.bed", "", basename(args$reg))}
 
 #Import regions to manipulate in R
-setwd("/Volumes/Enzo_lab/materiale_lab_Capasso/Lezioni_Bonfiglio/progetto_CRC/inhouse_public_EGA_TARGET_inhouse_integration/Mutation_rate/results/A3_new")
+setwd("path/to/your/working/dir")
 
 All_reg <- fread(args$reg, sep = "\t")
 
-Encode_bed <- fread("/Volumes/Enzo_lab/materiale_lab_Capasso/Lezioni_Bonfiglio/progetto_CRC/inhouse_public_EGA_TARGET_inhouse_integration/Mutation_rate/regions/encodetfbsV3.bed", sep = "\t")
+Encode_bed <- fread("encodetfbsV3.bed", sep = "\t")
 
-Problematic_reg <- fread("/Volumes/Enzo_lab/materiale_lab_Capasso/Lezioni_Bonfiglio/progetto_CRC/inhouse_public_EGA_TARGET_inhouse_integration/Mutation_rate/regions/wgEncodeCrgMapabilityAlign36mer_red.bed.gz", sep = '\t', header = FALSE)
+Problematic_reg <- fread("wgEncodeCrgMapabilityAlign36mer_red.bed.gz", sep = '\t', header = FALSE)
 
 #Set column names
 setnames(All_reg , c("chr", "start", "end", "TFBS_ID"))
@@ -200,7 +200,7 @@ All_reg_filtered_exp.bed.sorted <- as.data.table(All_reg_filtered_exp.range)
 ######################################################################################################################################
 #GENOMICRANGE OF THE FINAL MUTATION SET --> REMEMBER TO PROPERLY CHANGE "snvs.pass.bed" in paretheses !!!
 #setwd("/Volumes/Enzo_lab/materiale_lab_Capasso/Lezioni_Bonfiglio/progetto_CRC/inhouse_public_EGA_TARGET_inhouse_integration/Mutation_rate/mutations")
-snvs.pass.bed <- fread("/Volumes/Enzo_lab/materiale_lab_Capasso/Lezioni_Bonfiglio/progetto_CRC/inhouse_public_EGA_TARGET_inhouse_integration/Mutation_rate/mutations/ALL_SNVs.bed", sep = "\t", header = TRUE)
+snvs.pass.bed <- fread("ALL_SNVs.bed", sep = "\t", header = TRUE)
 snvs.pass.range <- makeGRangesFromDataFrame(snvs.pass.bed, keep.extra.columns=TRUE)
 seqinfo(snvs.pass.range) <- Seqinfo(genome="hg19")
 snvs.pass.range <- sort(snvs.pass.range)
@@ -270,7 +270,7 @@ table(Mut_per_pos$class_reg)
 Obs_mut_count_Core <- Mut_per_pos[, sum(SNV_count), by = class_reg]
 
 #Import trinuc_prob_aggregate.txt
-trinuc_prob_aggregate <- fread("/Volumes/Enzo_lab/materiale_lab_Capasso/Lezioni_Bonfiglio/progetto_CRC/inhouse_public_EGA_TARGET_inhouse_integration/Mutation_rate/mutations/trinuc_prob_aggregate.txt", sep = "\t", header = TRUE)
+trinuc_prob_aggregate <- fread("trinuc_prob_aggregate.txt", sep = "\t", header = TRUE)
 
 ################################################Fl CALCULUS FOR EACH TRINUCLEOTIDE IN SEQUENCES
 All_reg_seq <- dna(All_reg_filtered_exp.bed.sorted$sequences)
@@ -431,10 +431,8 @@ p1 <- ggplot(Mut_per_pos, aes(x=`distance from summit(bp)`)) + geom_line(aes(y= 
         axis.title.y = element_text(size = 20), plot.title = element_text(hjust = 0.5, size = 15, face = "bold")) + 
         scale_x_continuous(breaks = seq(min(Mut_per_pos$`distance from summit(bp)`), max(Mut_per_pos$`distance from summit(bp)`), by = 100))
 
-  ggsave(outFileplot, dpi=1000, device = "png", path = "/Volumes/Enzo_lab/materiale_lab_Capasso/Lezioni_Bonfiglio/progetto_CRC/inhouse_public_EGA_TARGET_inhouse_integration/Mutation_rate/results/A3_new/", height = 6, width = 10, units = "in")
+  ggsave(outFileplot, dpi=1000, device = "png", path = "./", height = 6, width = 10, units = "in")
 
 outFilereg <- paste0(args$root1, "_final_reg.bed")
 #Export useful files for testing and plotting
-#fwrite(Mut_per_pos, file = "/srv/ngs/analysis/aievola/Obs_Exp_Mut_rate_enrich_inhouse_R2/results/A2/SKNBE2C_PHOX2B_w_OCR_mut_table.txt", sep = "\t")
-#fwrite(permutations, file = "/srv/ngs/analysis/aievola/Obs_Exp_Mut_rate_enrich_inhouse_R2/results/A2/SKNBE2C_PHOX2B_w_OCR_perm.txt", sep = "\t")
 write.table(All_reg_filtered.bed, outFilereg, sep="\t", row.names=F, quote=F,col.names=T)
