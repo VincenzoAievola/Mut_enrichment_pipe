@@ -4,6 +4,6 @@ pipeline for enrichment analysis of noncoding Single Nucleotide Variants (SNVs) 
 # Usage
 ```./Mutation_enrich.R --reg {REGIONS TO TEST BED FILE}```
 
-# Flag explained
+# Flags
 
 ```-r REGIONS, --reg=path to the text file with +-1Kb extended CRC aTFBSs coordinates```
